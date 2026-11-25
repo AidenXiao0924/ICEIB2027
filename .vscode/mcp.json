@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "paper-DIC4": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "${workspaceFolder}"
+      ]
+    }
+  }
+}

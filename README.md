@@ -1,4 +1,4 @@
-# DIC4 — ICEIB 2027 / DietSense
+# DIC4 — ICEIB 2027: AI Agent for Indoor Environmental Management and Outdoor Activity Recommendations
 
 物聯網應用與資料分析作業：IEEE Conference 論文初稿、MCP 輔助開發與 GitHub 上的 OpenSpec。
 

@@ -1,0 +1,12 @@
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[font=\footnotesize\bfseries] at (0,0) {A. Resident query};
+\node[font=\footnotesize\bfseries] at (4.05,0) {B. Background event};
+\node[unit,text width=3.1cm] (q) at (0,-0.7) {Resolve task, time, and place};
+\node[unit,text width=3.1cm] (m) at (4.05,-0.7) {Merge sustained changes};
+\node[unit,text width=3.1cm] (e) at (0,-1.78) {Check source coverage};
+\node[unit,text width=3.1cm] (c) at (4.05,-1.78) {Check existing label\\and prompt cooldown};
+\node[unit,text width=3.1cm] (a) at (0,-2.92) {Give scoped advice or ask\\for the missing detail};
+\node[unit,text width=3.1cm] (r) at (4.05,-2.92) {Record an answer or\\retain an unknown label};
+\draw[link] (q)--(e); \draw[link] (e)--(a);
+\draw[link] (m)--(c); \draw[link] (c)--(r);
+\end{tikzpicture}

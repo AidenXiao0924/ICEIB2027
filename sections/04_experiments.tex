@@ -1,10 +1,19 @@
-\section{Experimental Results and Discussion}\label{sec:experiments}
-\subsection{Experimental Setup}
-Describe hardware, software, datasets, data splits, and reproducibility settings.
-\subsection{Baseline Methods and Evaluation Metrics}
-Specify fair baselines and justify the selected metrics.
-\subsection{Performance Comparison}
-Table~\ref{tab:comparison} provides a placeholder for measured results.
-\input{tables/comparison}
-\subsection{Ablation Study and Discussion}
-Analyze component contributions, uncertainty, failure cases, and limitations.
+\section{Planned Experiments and Discussion}\label{sec:experiments}
+\subsection{Pilot collection and reference labels}
+The proposed pilot will collect approximately two weeks of single-room observations, operation records, and resident feedback. The evaluation unit for event recognition will be one sustained change episode. Each episode will retain the samples from which its features were computed, the first possible prediction time, and any later confirmation. Each advice query will have a separate record linking the request, tool arguments, evidence, response, and subsequent acceptance or rejection.
+
+For appliance-event evaluation, a confirmed operation log or resident reply will supply the reference label. To accommodate concurrent operations, the proposed scoring scheme treats each tracked device as a separate on/off question. An unconfirmed state remains unscored for that device. Counts of unknown and overlapping states will accompany the scores. A missing reply cannot establish that a device was off. For advice evaluation, a reviewer will compare factual claims with the information actually available when the response was issued.
+
+\subsection{Chronological comparison and ablations}
+The fixed-rule baseline will classify events using predeclared conditions on the direction, magnitude, and persistence of temperature and humidity changes. A shallow decision tree will use the same features and training period. Thresholds, tree depth, feature windows, event-merging settings, and cooldown duration will be recorded before evaluating the held-out period. Earlier complete events will be used for development and later complete events for testing. An event crossing the boundary and any overlapping feature windows will be excluded. This grouping addresses temporal dependence between adjacent samples~\cite{roberts}.
+
+The first comparison will use sensor features alone to score both classifiers on identical held-out events. A second comparison will replay the same queries under three conditions: measurements and aligned forecasts alone, the same evidence with previously confirmed device states, and all available evidence with earlier resident preferences. A reply establishing the target state for an event will never serve as an input for predicting that state. Acceptance of a recommendation is likewise available only after the recommendation has been issued. Replay can assess changes in factual consistency and proposed prompts. Acceptance and actual reply rates will be measured only for interactions the resident experienced.
+
+\input{tables/metrics}
+
+\subsection{What the pilot can establish}
+Table~\ref{tab:metrics} distinguishes a classifier error from a retrieval error. A tree might recognize an event while the assistant retrieves a forecast for the wrong township. Conversely, the correct forecast and tool sequence can support an answer even when the cause of an indoor change remains unknown. For each device with positive held-out examples, the evaluation will compute its positive-class F1 and average these values across eligible devices. Counts of excluded devices and unconfirmed events will show how much of the deployment the score represents.
+
+Asking after every change could make the labeled subset look unusually easy to classify. The pilot will report monitored hours, candidate events, delivered questions, and replies together. Replay with different cooldown settings can show how many questions each policy would issue. It cannot establish how a resident would have answered a question that was never delivered.
+
+Three failure cases will receive individual review: a sensor reconnects after a gap, two appliances operate during the same event, and the requested destination differs from the home township. Each tests a different decision: whether the system bridges missing samples, whether it forces one cause onto an ambiguous trend, and whether it retrieves the correct forecast. A short single-room study can assess traceability and interaction cost in that setting. Seasonal behavior, unobserved rooms, and the causal effect of an individual appliance remain outside its reach.

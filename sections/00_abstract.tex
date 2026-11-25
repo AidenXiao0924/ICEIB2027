@@ -1,10 +1,6 @@
 \begin{abstract}
-% Replace with a self-contained abstract: background, problem, gap,
-% proposed method, verified results, and significance.
-This paper addresses [research problem] by proposing [method].
-The proposed approach is evaluated using [dataset and protocol].
-Report measured results and their implications here after evaluation.
+A resident deciding where to dry laundry needs to know what the room sensor measured and what weather is expected at the balcony during the drying period. A drop in indoor relative humidity answers neither question on its own. We propose DietSense, a conversational agent that combines room measurements, township forecasts, confirmed appliance operations, and resident feedback. An ESP32 sensor supplies temperature and relative humidity through MQTT. Python routines analyze timestamped records in SQLite, while a language model selects from approved tools and explains their results. A query triggers a check of location, time, and source. Background monitoring groups sustained changes into events and requests confirmation when the answer would affect a recommendation. A planned two-week pilot will compare fixed rules with a shallow decision tree on chronologically held-out events. It will also assess whether access to confirmed context improves the evidence cited in answers enough to justify the questions residents receive. The contribution at this stage is the system design and an event-level evaluation protocol.
 \end{abstract}
 \begin{IEEEkeywords}
-Artificial intelligence, machine learning, proposed method, performance evaluation
+conversational agents, indoor environmental monitoring, Internet of Things, thermal comfort, weather forecasts
 \end{IEEEkeywords}

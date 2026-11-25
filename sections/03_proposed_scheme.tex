@@ -1,28 +1,75 @@
 \section{Proposed Scheme}\label{sec:method}
-\subsection{Problem Formulation}
-Define the inputs, outputs, assumptions, and objective function.
+\subsection{Evidence available at decision time}
+Let $t$ denote the instant a query arrives. Let $I$ denote the interval of interest, which may start after $t$, and let $s$ be the requested township. A forecast record $f$ can describe an instant $\tau\in I$ when
 \begin{equation}
-\theta^{*}=\arg\min_{\theta}\mathcal{L}(\theta).
-\label{eq:objective}
+s_f=s,\quad t_{\mathrm{issued},f}\leq t,\quad
+t_{\mathrm{start},f}\leq\tau<t_{\mathrm{end},f}.
+\label{eq:forecast}
 \end{equation}
-\subsection{System Architecture}
-Describe the components and data flow in Fig.~\ref{fig:architecture}.
+If several records satisfy (\ref{eq:forecast}), the tool selects the most recently issued one available to the system by $t$. A request spanning two forecast periods retains both. An uncovered part of $I$ remains visible in the answer. A trip to a second township changes the forecast lookup even when the indoor sensor stays in the same room.
+
+Indoor observations carry a room identifier, sample time, temperature, and relative humidity. The proposed SQLite records distinguish measurement time from receipt time so a delayed MQTT message can be placed in its event without being treated as a fresh observation. The engine evaluates temperature and relative humidity together. Warming air, for example, can reduce relative humidity even when its water vapor content changes little. A derived dew-point trend may help describe this distinction. Neither trend identifies the appliance responsible.
+
+An operation record stores the device, stated interval, source of confirmation, and time of entry. A later correction supersedes the earlier interpretation while retaining both versions. Multiple active devices can coexist. A missing response leaves the status unknown. A comfort report, a device confirmation, and acceptance of a recommendation are separate fields because they answer different questions.
+
+\subsection{Architecture and tool routing}
+Figure~\ref{fig:arch} shows the eight modules. The resident provides the room, activity, or destination (M1). The query interface (M2) extracts the time and place or passes an unresolved reference to the planning agent (M3). Acquisition (M4) receives the ESP32 stream over MQTT, obtains CWA forecasts, and retains confirmations in SQLite. The Python analysis engine (M5) computes trends and event features. Domain rules (M6) specify source scope, required inputs, and when an interpretation needs confirmation. The decision module (M7) selects advice or a question. The interaction module (M8) presents the answer and records feedback.
+
 \begin{figure}[t]
 \centering
-\IfFileExists{figures/architecture.pdf}{\includegraphics[width=\columnwidth]{architecture.pdf}}{\fbox{\parbox[c][25mm][c]{0.85\columnwidth}{\centering Insert system architecture here}}}
-\caption{Overview of the proposed system architecture.}
-\label{fig:architecture}
+\input{figures/architecture}
+\caption{A resident query starts at M1. Background monitoring starts at M4 when a sample arrives. Both paths share analytical routines and store subsequent confirmations at M4.}
+\label{fig:arch}
 \end{figure}
-\subsection{Proposed Algorithm}
+
+The language model may request a room history, a township forecast, a confirmed operation record, or a deterministic analysis. The requested tool and validated arguments will be logged alongside the returned record identifiers. A numerical change reported in the response must be reproducible from those records. For an outdoor query, the response must attribute future conditions to the forecast and state the applicable interval. A resident can then distinguish a stale source, a wrong destination, and a disagreement about personal preference.
+
+\subsection{On-demand advice and background monitoring}
+Figure~\ref{fig:paths} distinguishes two occasions for asking a question. During a resident query, the missing information must matter to the decision at hand. In the background, sustained changes are grouped into one event before the system considers interrupting the resident. Algorithms~\ref{alg:query} and~\ref{alg:monitor} specify how each path handles incomplete evidence.
+
+\begin{figure}[t]
+\centering
+\input{figures/query_paths}
+\caption{The query may produce a conditional answer immediately. Background monitoring may finish silently when the resident has already been asked.}
+\label{fig:paths}
+\end{figure}
+
 \begin{algorithm}[t]
-\caption{Illustrative processing procedure}
-\label{alg:method}
+\caption{Answer a household query (M1--M8)}\label{alg:query}
 \begin{algorithmic}[1]
-\Require Input data $X$, model parameters $\theta$
-\Ensure Output $Y$
-\State Preprocess $X$ to obtain $X'$
-\State $Y \gets f_{\theta}(X')$
-\State \Return $Y$
+\Require Query $q$, decision time $t$, available room context
+\Ensure Answer with sources, or a targeted clarification
+\State Resolve activity, place, and interval (M1--M3)
+\If{a required place or interval is ambiguous}
+  \State \Return a question identifying the missing detail (M8)
+\EndIf
+\State Retrieve eligible records with approved tools (M3--M4)
+\State Compute trends and check coverage (M5--M6)
+\If{a missing fact could change the advice}
+  \State Give the supported part and ask for that fact (M7--M8)
+\Else
+  \State Give advice with source times and scope (M7--M8)
+\EndIf
+\State Log evidence identifiers and later feedback (M4, M8)
 \end{algorithmic}
 \end{algorithm}
-Replace the illustrative objective and algorithm with the actual method.
+\begin{algorithm}[t]
+\caption{Monitor events and collect feedback (M4--M8)}\label{alg:monitor}
+\begin{algorithmic}[1]
+\Require Samples, event history, and prompt history
+\Ensure Updated event and confirmation status
+\State Store the sample and check continuity (M4)
+\If{the observation window contains a material gap}
+  \State Mark it incomplete and restart the window (M5)
+  \State \Return the current evidence status
+\EndIf
+\State Detect sustained change and merge related windows (M5)
+\If{an event needs a label and the cooldown has elapsed}
+  \State Ask one question tied to that event (M6--M8)
+  \State Record the reply or retain an unknown label (M4, M8)
+\EndIf
+\State Preserve the event interval and label revisions (M4)
+\end{algorithmic}
+\end{algorithm}
+
+Consider an illustrative query: \emph{Can I hang the laundry outside for the next two hours?} The agent resolves whether the resident means the home balcony, retrieves the forecast covering that township and interval, and keeps the room reading available if indoor drying is an alternative. If the forecast gives a precipitation probability over a broader interval, the response identifies that interval. A precise rain onset or drying time would require additional evidence. A useful response can still tell the resident which part of the question the forecast covers and whether the indoor alternative has a recent measurement.

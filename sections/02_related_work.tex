@@ -1,7 +1,10 @@
 \section{Related Work}\label{sec:related}
-\subsection{Existing Approaches}
-Review relevant methods and compare assumptions, strengths, and limitations.
-The IEEE style uses numbered citations, e.g., \cite{shannon1948}.
-% The citation above is a formatting example; replace with relevant sources.
-\subsection{Research Gap}
-Explain how the proposed method addresses limitations of previous research.
+\subsection{Conversational tools and smart-home data}
+ReAct demonstrates how a language model can obtain information by interleaving reasoning with external actions~\cite{react}. AdaHome routes smart-home requests and uses interaction history to handle preference-dependent commands~\cite{adahome}. DietSense adopts the separation between interpreting a request and executing a tool. A preference about drying clothes indoors may guide a recommendation, whereas a statement that the dehumidifier ran requires an operation record or confirmation. Keeping these histories separate allows a resident to correct one without changing the other.
+
+AgentSense generates labeled sensor streams from simulated household activities~\cite{agentsense}. Such streams can support activity-recognition research. In the present setting, the difficult cases are episodes in which several devices operate together or a resident cannot recall what happened. A simulation supplies its own event labels. A home deployment must account for who confirmed an event and when that information became available.
+
+\subsection{Environmental models and the choice of labels}
+The CBE Thermal Comfort Tool implements comfort models with explicit environmental and personal inputs~\cite{cbe}. DietSense has a single temperature and humidity sensor. It can report a trend and ask how it felt, but lacks several inputs needed for a full comfort assessment. Likewise, the office dataset studied by Candanedo and Feldheim associates environmental measurements with occupancy~\cite{occupancy}. A successful occupancy prediction would not establish which device was operating. Table~\ref{tab:work} identifies the evidence each source contributes and the question left for the pilot.
+
+\input{tables/comparison}

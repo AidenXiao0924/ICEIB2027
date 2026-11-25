@@ -1,14 +1,6 @@
 \section{Introduction}\label{sec:intro}
-\subsection{Background and Motivation}
-Describe the importance of the research problem using verified evidence.
-\subsection{Problem Statement and Research Gap}
-Explain existing limitations and the unresolved research question.
-\subsection{Research Contributions}
-The main contributions of this work are as follows:
-\begin{itemize}
-\item Describe the methodological innovation.
-\item Describe the system or algorithmic contribution.
-\item Describe the evaluation contribution.
-\end{itemize}
-\subsection{Paper Organization}
-Section~\ref{sec:related} reviews related work. Section~\ref{sec:method} presents the proposed scheme. Section~\ref{sec:experiments} describes the evaluation, and Section~\ref{sec:conclusion} concludes the paper.
+A room sensor and a weather forecast can both report relative humidity for the same afternoon. One describes air near the sensor when it sampled the room. The other describes an expected condition over a future interval at a representative outdoor location. If a resident asks whether laundry will dry on the balcony, the distinction determines which evidence belongs in the answer. If the resident instead asks why the room feels less humid, an operation record or a report of an open window may matter more than the forecast.
+
+Adaptive-comfort research links occupants' preferences to thermal history and context~\cite{deDear}. Taiwan's Central Weather Administration (CWA) provides a separate source of context through forecasts for 368 townships and districts. Its product documentation identifies the representative location and cautions that conditions can vary within a township~\cite{cwa}. A home assistant must therefore resolve two references that are easily implicit in a question: the place the resident means and the interval over which the advice will apply.
+
+The DietSense project addresses three household decisions: interpreting equipment use in one room, planning an outing, and choosing between indoor and outdoor drying~\cite{project}. The design links each factual claim to the observation, forecast period, or confirmation that supports it. A second contribution is a background procedure that merges sustained changes into events and limits repeated requests for feedback. A third is a planned comparison that measures both prediction quality and the cost of gathering extra evidence. Section~\ref{sec:related} identifies assumptions inherited from prior work. Sections~\ref{sec:method} and~\ref{sec:experiments} describe the design and pilot.

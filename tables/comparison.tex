@@ -1,14 +1,17 @@
-\begin{table}[t]
-\caption{Performance comparison (results pending)}
-\label{tab:comparison}
-\centering
-\begin{tabular}{lcc}
+\begin{table*}[t]
+\caption{Prior work and its applicability to the single-room pilot}
+\label{tab:work}\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}l l Y Y Y Y Y Y@{}}
 \toprule
-Method & Accuracy & F1-score \\
+Ref. & Year & Problem & Method & Domain knowledge & Data or input & Contribution & Limit for this task\\
 \midrule
-Baseline A & -- & -- \\
-Baseline B & -- & -- \\
-Proposed & -- & -- \\
+\cite{react} & 2023 & Retrieve evidence during a task & Tool-using language model & Interactive reasoning & Question answering and decision tasks & External results inform subsequent actions & Sensor location and time need explicit checks\\
+\cite{adahome} & 2026 & Interpret household requests & Local language model and routing & Home preferences & Commands and preference histories & Routes requests by intent & A preference cannot confirm a device state\\
+\cite{agentsense} & 2026 & Obtain activity labels & Agent-based simulation & Home activities & Virtual sensor streams & Produces labeled activity sequences & Simulated labels cannot verify a real event\\
+\cite{deDear} & 1998 & Explain variation in comfort & Adaptive model & Thermal preference & Field surveys in buildings & Relates context to preferred conditions & A population trend cannot label one episode\\
+\cite{occupancy} & 2016 & Estimate occupancy & Statistical learning & Office environment & Sensors and occupancy labels & Predicts whether an office is occupied & Occupancy and appliance use are distinct targets\\
+\cite{cbe} & 2020 & Calculate comfort indices & Physical and empirical models & Thermal comfort & Environmental and personal inputs & Makes model assumptions explicit & Some inputs are unmeasured in the pilot\\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabularx}
+\end{table*}

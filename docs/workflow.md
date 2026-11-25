@@ -8,6 +8,10 @@
 6. 確認內容與 PDF 後 commit、push，不使用 force push。共同作者的雲端修改應先比對，勿直接覆蓋。
 7. 繳交最新 PDF、GitHub 連結；必要時附 MCP 呼叫證明及 Overleaf 唯讀連結。
 
+## 可選：Overleaf Web MCP
+
+依 [MCP 安裝指南](mcp-setup.md) 完成登入並驗證後，可透過 auth_status、list_projects、get_project_tree 讀取專案，使用 plan_sync 預覽差異，經確認後用 sync_directory 同步 ICEIB2027-IEEE/，再執行 compile_project 與 get_compile_log。未驗證前仍採手動同步。
+
 ## 目前限制
 
-本次 GitHub 直接更新不會自動同步本機或 Overleaf。尚未執行 OpenSpec CLI 或最新 LaTeX 編譯。正式標題及作者待組員確認。兩週 pilot 尚未完成，不可填入假數據。
+本次 GitHub 直接更新不會自動同步本機或 Overleaf。尚未執行 OpenSpec CLI、Overleaf Web MCP 登入測試或最新 LaTeX 編譯。正式標題及作者待組員確認。兩週 pilot 尚未完成，不可填入假數據。

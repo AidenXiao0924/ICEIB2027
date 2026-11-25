@@ -33,4 +33,58 @@
 
 Git MCP 可檢查差異與建立本機 commit；push/pull 由 Git CLI 處理。GitHub 登入授權與 Overleaf Token 不同。禁止提交 Token 或 session。若憑證曾公開，應撤銷後重新產生。
 
-第三方 overleaf-web-mcp 是可另外評估的整合，不是本專案已安裝或已授權的工具；使用前應確認套件來源、權限、服務條款及帳號支援狀況。
+## Overleaf Web MCP（新增設定，尚待本機驗證）
+
+使用第三方 [overleaf-web-mcp](https://github.com/mhmdaskari/overleaf-web-mcp) 1.3.0；非 Overleaf 官方服務。依套件文件，核心工作流程使用網頁登入 session，不需要付費 Git Integration，但受帳號權限與服務限制。安裝前確認來源與使用條款。
+
+### Windows 安裝
+
+在 PowerShell 執行（已安裝 Node.js 20+ 可跳過安裝）：
+
+```powershell
+winget install --id OpenJS.NodeJS.LTS -e
+```
+
+重新開啟終端機後：
+
+```powershell
+node --version
+npm.cmd --version
+npx.cmd -y overleaf-web-mcp@1.3.0 login
+npx.cmd -y overleaf-web-mcp@1.3.0 call auth_status
+```
+
+在專用瀏覽器視窗自行登入 Overleaf；不要把 Cookie、Token 或密碼寫入 GitHub。
+
+### Antigravity 雙 MCP 設定
+
+合併到既有全域設定檔（保留其他 servers，替換 Git 路徑）：
+
+```json
+{
+  "mcpServers": {
+    "paper-DIC4": {
+      "command": "uvx",
+      "args": ["mcp-server-git", "--repository", "C:/path/to/ICEIB2027"]
+    },
+    "overleaf": {
+      "command": "npx.cmd",
+      "args": ["-y", "overleaf-web-mcp@1.3.0", "serve"]
+    }
+  }
+}
+```
+
+若找不到 npx.cmd，執行 `(Get-Command npx.cmd).Source`，將完整路徑填入 command。重新啟動 IDE。根目錄 .mcp.json 與 .vscode/mcp.json 亦已加入此 server；其他客戶端須依其啟動方式調整。不要直接信任或執行未審查的第三方設定。
+
+### 操作與驗證
+
+1. auth_status 確認登入，list_projects 列出專案，核對正確專案 ID。
+2. get_project_tree 檢查雲端目錄，必要時 read_file 讀取內容。
+3. plan_sync 指定本機 ICEIB2027-IEEE/ 的絕對路徑，檢查同步差異；共同作者的修改先備份及比對。
+4. 經使用者確認後，依工具 schema 使用 sync_directory 與 planToken，採 additive 模式，避免刪除遠端檔案；tracked 寫入取決於帳號支援，不強制使用。
+5. compile_project 編譯 main.tex，檢查 builtCleanly 與輸出；get_compile_log 查閱錯誤。
+6. 修正後重新比對、同步與編譯。Git commit/push 仍走 Git 工作流程。
+
+若登入過期，重新執行 login。以上是套件支援能力與待測流程，不是已取得的執行成果。參考 [安裝指南](https://mhmdaskari.github.io/overleaf-web-mcp/install/) 與 [工具文件](https://mhmdaskari.github.io/overleaf-web-mcp/tools/)。
+

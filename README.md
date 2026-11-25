@@ -6,9 +6,9 @@
 
 - [ICEIB2027-IEEE/](ICEIB2027-IEEE/)：IEEEtran 論文、六個章節、BibTeX、TikZ 圖及表格。
 - [openspec/](openspec/)：研究需求、設計、提案與待辦；目前是 proposed change，非已完成的系統規格。
-- [docs/mcp-setup.md](docs/mcp-setup.md)：Antigravity Git MCP 設定、診斷及重現步驟。
+- [docs/mcp-setup.md](docs/mcp-setup.md)：Antigravity Git MCP 與 Overleaf Web MCP 安裝、設定及驗證方法。
 - [docs/workflow.md](docs/workflow.md)：論文、GitHub、Overleaf 與 OpenSpec 工作流程。
-- `.mcp.json`、`.vscode/mcp.json`：其他相容客戶端的 Git MCP 設定範例，未包含登入憑證；請按本機路徑調整。
+- `.mcp.json`、`.vscode/mcp.json`：其他相容客戶端的 Git MCP 與 Overleaf Web MCP 設定範例，未包含登入憑證；請按本機路徑調整。
 
 ## 研究內容
 
@@ -25,7 +25,7 @@ DietSense 結合 ESP32/MQTT 室內溫濕度、SQLite 資料、Python 分析、CW
 
 ## 編譯與同步
 
-將 ICEIB2027-IEEE/ **內的內容**上傳 Overleaf，選 main.tex、pdfLaTeX，執行 BibTeX 並重新編譯。亦可在該目錄執行 `latexmk -pdf main.tex`。目前採手動同步；未測試第三方 Overleaf Web MCP。
+將 ICEIB2027-IEEE/ **內的內容**上傳 Overleaf，選 main.tex、pdfLaTeX，執行 BibTeX 並重新編譯。亦可在該目錄執行 `latexmk -pdf main.tex`。目前已加入第三方 Overleaf Web MCP 1.3.0 設定；需在使用端完成 Node.js 安裝、Overleaf 登入及連線測試後，才能透過 MCP 讀取專案、同步及遠端編譯。尚未實測，手動同步仍可使用。
 
 ## OpenSpec
 

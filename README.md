@@ -31,14 +31,4 @@ DietSense 結合 ESP32/MQTT 室內溫濕度、SQLite 資料、Python 分析、CW
 
 參見 [研究提案](openspec/changes/define-evidence-grounded-agent/proposal.md)、[設計](openspec/changes/define-evidence-grounded-agent/design.md)、[需求](openspec/changes/define-evidence-grounded-agent/specs/evidence-grounded-advice/spec.md) 與 [任務](openspec/changes/define-evidence-grounded-agent/tasks.md)。安裝官方 CLI 後在 repository 根目錄執行 `openspec validate define-evidence-grounded-agent --strict`。尚未執行 CLI 驗證。
 
-## 繳交檢查
-
-- [x] IEEE 論文原始碼模組化
-- [x] Git MCP 已有實際呼叫紀錄（本機 Antigravity）
-- [x] OpenSpec 提案文件放置 GitHub
-- [ ] 執行 OpenSpec CLI 驗證
-- [ ] 與組員確認正式標題、作者順序、英文拼音、系所及聯絡信箱
-- [ ] 查證全部文獻並重新編譯最新版 PDF
-- [ ] 確認老師可存取 GitHub，繳交 PDF 及 Repository 連結
-
 本次參考組員的目錄分層與工作紀錄方式，未複製其研究原稿或登入設定。架構圖以 TikZ 原始碼保留，不另附尚未產生的 architecture.pdf。
